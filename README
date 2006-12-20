@@ -61,9 +61,9 @@ Please note that multiple comma separated selectors are not yet handled correctl
 
 == Installation
 
-Install as a plugin by dropping the <code>css_dryer/</code> directory into your <code>vendor/plugins/</code> directory.
+Install in the usual Rails way.  From your application's directory:
 
-Soon I plan to set up a public Subversion repository and then you will be able to install <code>css_dryer</code> in the usual Rails way.
+    script/plugin install http://opensource.airbladesoftware.com/trunk/plugins/css_dryer
 
     
 == Usage
