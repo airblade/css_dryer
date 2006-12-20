@@ -1,0 +1,30 @@
+= Change Log
+
+Below is a complete list of changes for each revision of CssDryer.
+
+== 0.0.5
+
+* Changed extension from <code>.dcss</code> to <code>.ncss</code> to avoid clashing with Miles Byrne's DCSS stylesheets (suggested by Miles).
+* Clarified the lack of support for nested, multiple, comma separated selectors by adding a paragraph to the README's Which Selectors Are Supported section.
+
+== 0.0.4
+
+* Handles class, pseudo-class, attribute, id, child and adjacent selectors (suggested by Adi and Maxim Kulkin).
+* No longer outputs empty selectors (noticed by Adi).
+* Fixed typo in nesting example in README.
+
+== 0.0.3
+
+* Fixed bug where parameter was passed to the wrong method.
+
+== 0.0.2
+
+* Added support for <code>@media</code> blocks.
+* Fixed bug in handling of non-nested descendant selectors.
+* Handles whitespace consistently, preserving the original as much as possible.
+
+== 0.0.1
+
+* Initial public release.
+* Handles descendant selectors.
+* Handles ERB.

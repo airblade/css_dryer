@@ -1,0 +1,140 @@
+= CssDryer -- Eliminate Repetition In Your Stylesheets
+
+== Introduction
+
+Cascading style sheets (CSS) are wonderful but repetitive.  Rails strongly discourages repetition, the don't repeat yourself (DRY) principle, so writing CSS feels ungainly in Rails.
+
+There are two sources of repetition in CSS:
+
+* nested selectors
+* lack of variables
+
+Nested selectors lead to CSS like this:
+
+  div           { font-family: Verdana; }
+  div#content   { background-color: green; }
+  div#content p { color: red; }
+
+Note the triple repetition of <code>div</code> and the double repetition of <code>#content</code>.
+
+The lack of variables leads to CSS like this:
+
+  .sidebar { border: 1px solid #fefefe; }
+  .content { color: #fefefe; }
+
+Note the repeated colour <code>#fefefe</code>.
+
+The CssDryer eliminates both of these sources allowing you to write DRY, pleasing stylesheets.  The examples above become:
+
+  <% dark_grey = '#fefefe' %>
+
+  div {
+    font-family: Verdana;
+    #content {
+      background-color: green;
+      p { color: red; }
+    }
+  }
+
+  .sidebar { border: 1 px solid <%= dark_grey %>; }
+  .content { color: <%= dark_grey %>; }
+
+Note, though, that <code>@media</code> blocks are preserved.  For example:
+
+    @media screen, projection {
+      div {font-size:100%;}
+    }
+
+is left unchanged.
+
+The original whitespace is preserved as much as possible.
+
+See CssDryer for more details.
+
+
+== Which Selectors Are Supported?
+
+The CssDryer handles nested descendant, child, adjacent, class, pseudo-class, attribute and id selectors.
+
+Please note that multiple comma separated selectors are not yet handled correctly.  They are next on the to-do list.
+
+
+== Installation
+
+Install as a plugin by dropping the <code>css_dryer/</code> directory into your <code>vendor/plugins/</code> directory.
+
+Soon I plan to set up a public Subversion repository and then you will be able to install <code>css_dryer</code> in the usual Rails way.
+
+    
+== Usage
+
+Create a controller to serve your DRY stylesheets:
+
+    script/generate controller dry_css
+
+Edit the controller so it looks like this:
+
+    class DryCssController < ApplicationController
+      layout nil
+      session :off
+
+      before_filter :set_headers
+
+      private
+      def set_headers
+        headers['Content-Type'] = 'text/css'
+      end
+    end
+
+You can then put your stylesheets, DRY or otherwise, in <code>app/views/dry_css/</code>.
+
+DRY stylesheets should have a <code>ncss</code> extension -- think 'n' for nested.  For example, <code>site.ncss</code>.
+
+Get them in your views like this:
+
+    <link href='/dry_css/site' rel='Stylesheet' type='text/css'>
+
+
+== To Do
+
+* Split out a separate EXAMPLES document.
+
+* Handle multiple comma-separated selector statements where each is on its own line (John Nunemaker)
+
+* Handled nested multiple comma-separated selectors.
+
+* Cache the rendered stylesheets properly.  See Myles Byrne's DCSS[http://myles.id.au/2006/11/20/introducing-dcss/] which appears to (a) allow <code>.dcss</code> files in <code>public/stylesheets</code> and (b) render a <code>.css</code> which is properly cached in production.  See also ActionView::Base.  Note that the cached file must have a .css extension for the content-type to be set correctly to text/css.
+
+* Incorporate a generator into the plugin so that the <code>DryCssController</code> is created automatically.
+
+* Make a stylesheet helper tag to use DRY stylesheets.
+
+* Make a webpage where you can paste in a DRY stylesheet and get CSS out (without ERB step).
+
+* Make a gem version where you can pass in a DRY stylesheet on the command line and get CSS out (without ERB step).
+
+
+== Alternatives
+
+* RCSS[http://rubyforge.org/projects/rcss]: ERB, server-side constants, server-side classes and command line execution.  No nesting as such, though server-side classes offer a form of inheritance.
+
+* DCSS[http://rubyforge.org/projects/dcss] (written up here[http://myles.id.au/2006/11/20/introducing-dcss/]): server-side constants, different syntax.  Descendant selectors only.
+
+* Styleaby[http://topfunky.net/svn/plugins/styleaby/README]: creates CSS with Ruby syntax.  "An experimental, unauthorized mashup of Scott Barron's stillborn Builder::CSS templates and Why The Lucky Stiff's Markaby templates."
+
+
+== Credits
+
+The idea came from John Nunemaker on {Rails Tips}[http://railstips.org/2006/12/7/styleaby-css-plugin/].  John beta-tested the code, provided a test case for @media blocks and suggested the controller's body.  Thanks John!
+
+
+== Author
+
+{Andrew Stewart}[mailto:boss@airbladesoftware.com], {AirBlade Software}[http://airbladesoftware.com]
+
+
+== Licence
+
+CssDryer is available under the MIT licence.  See MIT-LICENCE for the details.
+
+Copyright (c) 2006 Andrew Stewart
