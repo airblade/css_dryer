@@ -334,6 +334,30 @@ END
     assert_equal output, process(input)
   end
 
+  def test_should_not_output_blank_lines
+    input = <<END
+div {
+  color: red;
+
+  span { color: blue; }
+
+  a {
+    .hover { text-decoration: none; }
+    .visited { text-decoration: none; }
+  }
+
+}
+END
+    assert_equal <<END, process(input)
+div {
+  color: red;
+}
+div span { color: blue; }
+div a.hover { text-decoration: none; }
+div a.visited { text-decoration: none; }
+END
+  end
+
   def test_style_hash_has_non_hash_children
     hsh = StyleHash[ 'key' => %w( foo ) ]
     assert hsh.has_non_style_hash_children
@@ -472,7 +496,6 @@ div + p {
 }
 div + p + b { font-variant: small-caps; }
 END
-
     assert_equal output, process(input)
   end
 
@@ -496,6 +519,175 @@ div[foo~="warning"] { color: blue; }
 END
 
     assert_equal output, process(input)
+  end
+
+  def test_should_handle_comma_separated_selectors_without_nesting
+    input = <<END
+h1, h2, h3 {
+  margin-top: 5px;
+  color: red;
+}
+END
+    assert_equal <<END, process(input)
+h1 {
+  margin-top: 5px;
+  color: red;
+}
+h2 {
+  margin-top: 5px;
+  color: red;
+}
+h3 {
+  margin-top: 5px;
+  color: red;
+}
+END
+  end
+
+  def test_should_handle_comma_separated_selectors_with_outer_nesting
+    input = <<END
+h1, h2, h3 {
+  margin-top: 5px;
+  color: red;
+  p { padding: 3px; }
+}
+END
+    assert_equal <<END, process(input)
+h1 {
+  margin-top: 5px;
+  color: red;
+}
+h1 p { padding: 3px; }
+h2 {
+  margin-top: 5px;
+  color: red;
+}
+h2 p { padding: 3px; }
+h3 {
+  margin-top: 5px;
+  color: red;
+}
+h3 p { padding: 3px; }
+END
+  end
+
+  def test_should_handle_comma_separated_selectors_with_inner_nesting
+    input = <<END
+h1 {
+  color: red;
+  p, span { padding: 3px; }
+}
+END
+    assert_equal <<END, process(input)
+h1 {
+  color: red;
+}
+h1 p {
+  padding: 3px;
+}
+h1 span {
+  padding: 3px;
+}
+END
+  end
+
+  def test_should_handle_comma_separated_selectors_with_deep_nesting
+    input = <<END
+div {
+  color: red;
+  h1 {
+    color: blue;
+    p, span {
+      font-weight: strong;
+    }
+  }
+}
+END
+    assert_equal <<END, process(input)
+div {
+  color: red;
+}
+div h1 {
+  color: blue;
+}
+div h1 p {
+  font-weight: strong;
+}
+div h1 span {
+  font-weight: strong;
+}
+END
+  end
+
+  def test_should_handle_comma_separated_selectors_with_inner_and_outer_nesting
+    input = <<END
+div, span {
+  color: red;
+  h1, h2 {
+    font-weight: strong;
+  }
+}
+END
+    assert_equal <<END, process(input)
+div {
+  color: red;
+}
+div h1 {
+  font-weight: strong;
+}
+div h2 {
+  font-weight: strong;
+}
+span {
+  color: red;
+}
+span h1 {
+  font-weight: strong;
+}
+span h2 {
+  font-weight: strong;
+}
+END
+  end
+
+  def test_should_handle_comma_separated_selectors_on_subsequent_lines_inline_styles
+    input = <<END
+div#some,
+div#another,
+div#third { color: red; }
+END
+    assert_equal <<END, process(input)
+div#some {
+  color: red;
+}
+div#another {
+  color: red;
+}
+div#third {
+  color: red;
+}
+END
+  end
+
+  def test_should_handle_comma_separated_selectors_on_subsequent_lines_multiline_styles
+    input = <<END
+div#some,
+div#another,
+div#third {
+  color: red;
+}
+END
+    assert_equal <<END, process(input)
+div#some {
+  color: red;
+}
+div#another {
+  color: red;
+}
+div#third {
+  color: red;
+}
+END
   end
 
 end

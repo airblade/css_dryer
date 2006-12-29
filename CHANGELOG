@@ -2,6 +2,11 @@
 
 Below is a complete list of changes for each revision of CssDryer.
 
+== 0.1.0
+
+* Handles comma separated selectors (suggested by John Nunemaker).
+* No longer outputs nested blank lines (noticed by Adi).
+
 == 0.0.5
 
 * Changed extension from <code>.dcss</code> to <code>.ncss</code> to avoid clashing with Miles Byrne's DCSS stylesheets (suggested by Miles).

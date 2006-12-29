@@ -56,7 +56,7 @@ See CssDryer for more details.
 
 The CssDryer handles nested descendant, child, adjacent, class, pseudo-class, attribute and id selectors.
 
-Please note that multiple comma separated selectors are not yet handled correctly.  They are next on the to-do list.
+Multiple comma separated selectors are now supported.
 
 
 == Installation
@@ -97,21 +97,17 @@ Get them in your views like this:
 
 == To Do
 
-* Split out a separate EXAMPLES document.
-
-* Handle multiple comma-separated selector statements where each is on its own line (John Nunemaker)
-
-* Handled nested multiple comma-separated selectors.
-
 * Cache the rendered stylesheets properly.  See Myles Byrne's DCSS[http://myles.id.au/2006/11/20/introducing-dcss/] which appears to (a) allow <code>.dcss</code> files in <code>public/stylesheets</code> and (b) render a <code>.css</code> which is properly cached in production.  See also ActionView::Base.  Note that the cached file must have a .css extension for the content-type to be set correctly to text/css.
+
+* Split out a separate EXAMPLES document.
 
 * Incorporate a generator into the plugin so that the <code>DryCssController</code> is created automatically.
 
 * Make a stylesheet helper tag to use DRY stylesheets.
 
-* Make a webpage where you can paste in a DRY stylesheet and get CSS out (without ERB step).
+* (Make a webpage where you can paste in a DRY stylesheet and get CSS out (without ERB step).)
 
-* Make a gem version where you can pass in a DRY stylesheet on the command line and get CSS out (without ERB step).
+* (Make a gem version where you can pass in a DRY stylesheet on the command line and get CSS out (without ERB step).)
 
 
 == Alternatives

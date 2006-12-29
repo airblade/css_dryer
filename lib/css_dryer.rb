@@ -1,9 +1,23 @@
 require 'erb'
 
+# Lifted from Rails.
+# "", "   ", nil, [], and {} are blank
+class Object  #:nodoc:
+  def blank?
+    if respond_to?(:empty?) && respond_to?(:strip)
+      empty? or strip.empty?
+    elsif respond_to?(:empty?)
+      empty?
+    else
+      !self
+    end
+  end
+end
+
 # Converts DRY stylesheets into normal CSS ones.
 module CssDryer
 
-  VERSION = '0.0.5'
+  VERSION = '0.1.0'
 
   class StyleHash < Hash  #:nodoc:
     attr_accessor :multiline
@@ -12,7 +26,10 @@ module CssDryer
       multiline = false
     end
     def has_non_style_hash_children
-      value.each { |elem| return true unless elem.kind_of? StyleHash }
+      value.each { |elem|
+        next if elem.kind_of? StyleHash
+        return true unless elem.blank?
+      }
       false
     end
     # We only ever have one key and one value
@@ -64,11 +81,14 @@ module CssDryer
   #
   # Styles may be nested to an arbitrary level.
   def process(nested_css, indent = 2)  #:doc:
+    # 'Normalise' comma separated selectors
+    nested_css = factor_out_comma_separated_selectors(nested_css, indent)
     structure_to_css(nested_css_to_structure(nested_css), indent)
   end
 
   def nested_css_to_structure(css)  #:nodoc:
     # Implementation notes:
+    # - the correct way to do this would be using a lexer and parser
     # - ironically there is a degree of repetition here
     document = []
     selectors = []
@@ -154,18 +174,23 @@ module CssDryer
             # Set aside
             set_asides << set_aside(combo_key(key, v.key), v.value, v.multiline)
           else
-            css << (elem.multiline ? "#{v}" : v)
-            css << (elem.multiline ? "\n" : '')
+            unless v.blank?
+              css << (elem.multiline ? "#{v}" : v)
+              css << (elem.multiline ? "\n" : '')
+            end
           end
         end
         css << "}\n" if elem.has_non_style_hash_children
         # Now write out the styles that were nested in the above hash
         set_asides.flatten.each { |hsh|
+          next unless hsh.has_non_style_hash_children
           css << "#{hsh.key} {"
           css << (hsh.multiline ? "\n" : '')
           hsh.value.each { |item|
-            css << (hsh.multiline ? "#{indentation}#{item}" : item)
-            css << (hsh.multiline ? "\n" : '')
+            unless item.blank?
+              css << (hsh.multiline ? "#{indentation}#{item}" : item)
+              css << (hsh.multiline ? "\n" : '')
+            end
           }
           css << "}\n"
         }
@@ -191,11 +216,100 @@ module CssDryer
     }
     flattened
   end
+  private :set_aside
 
-  def combo_key(branch, leaf) #:nodoc:
+  def combo_key(branch, leaf)  #:nodoc:
     (leaf =~ /\A[.:#\[]/) ? "#{branch}#{leaf}" : "#{branch} #{leaf}"
   end
   private :combo_key
+
+  def factor_out_comma_separated_selectors(css, indent = 2)  #:nodoc:
+    # TODO: replace with a nice regex
+    commas = false
+    css.each { |line|
+      next if line =~ /@media/
+      commas = true if line =~ /,/
+    }
+    return css unless commas
+
+    state_machine = StateMachine.new indent
+    css.each { |line| state_machine.act_on line }
+    factor_out_comma_separated_selectors state_machine.result
+  end
+  private :factor_out_comma_separated_selectors
+
+  class StateMachine  #:nodoc:
+    def initialize(indent = 2)
+      @state = 'flow'
+      @depth = 0
+      @output = []
+      @indent = ' ' * indent
+    end
+    def result
+      @output.join
+    end
+    def act_on(input)
+      # Implemenation notes:
+      # - the correct way to do this would be to use a lexer and parser
+      if @state.eql? 'flow'
+        case input
+        when /^[^,]*$/  # no commas
+          @output << input
+        when /@media/   # @media block
+          @output << input
+        when /,/        # commas
+          @state = 'reading_selectors'
+          @selectors = []
+          @styles = []
+          act_on input
+        end
+        return
+
+      elsif @state.eql? 'reading_selectors'
+        if input !~ /[{]/
+          @selectors << extract_selectors(input)
+        else
+          @selectors << extract_selectors($`)
+          @state = 'reading_styles'
+          act_on input
+        end
+        return
+
+      elsif @state.eql? 'reading_styles'
+        case input
+        when /\A[^{}]*\Z/           # no braces
+          @styles << input
+        when /\A[^,]*[{](.*)[}]/      # inline styles (no commas)
+          @styles << (@depth == 0 ? $1 : input)
+        when /[{](.*)[}]/           # inline styles (commas)
+          @styles << $1
+        when /[{][^}]*\Z/           # open multiline block
+          @styles << input unless @depth == 0
+          @depth += 1
+        when /[^{]*[}]/             # close multiline block
+          @depth -= 1
+          @styles << input unless @depth == 0
+        end
+        if @depth == 0 && input =~ /[}]/
+          @selectors.flatten.each { |selector|
+            # Force each style declaration onto a new line.
+            @output << "#{selector} {\n"
+            @styles.each { |style| @output << "#{@indent}#{style.chomp.strip}\n" }
+            @output << "}\n"
+          }
+          @state = 'flow'
+        end
+        return
+
+      end
+    end
+    
+    def extract_selectors(line)
+      line.split(',').map { |selector| selector.strip }.delete_if { |selector| selector =~ /\A\s*\Z/ }
+    end
+    private :extract_selectors
+
+  end
 
   # Handler for DRY stylesheets which can be registered with Rails
   # as a new templating system.
