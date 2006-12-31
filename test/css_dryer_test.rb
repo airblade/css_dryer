@@ -690,4 +690,20 @@ div#third {
 END
   end
 
+  def test_should_handle_comma_separated_fonts
+    input = <<END
+html, body {
+  font-family: "Lucida Grande", Verdana, sans-serif;
+}
+END
+    assert_equal <<END, process(input)
+html {
+  font-family: "Lucida Grande", Verdana, sans-serif;
+}
+body {
+  font-family: "Lucida Grande", Verdana, sans-serif;
+}
+END
+  end
+
 end

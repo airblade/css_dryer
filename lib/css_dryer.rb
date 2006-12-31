@@ -17,7 +17,7 @@ end
 # Converts DRY stylesheets into normal CSS ones.
 module CssDryer
 
-  VERSION = '0.1.0'
+  VERSION = '0.1.1'
 
   class StyleHash < Hash  #:nodoc:
     attr_accessor :multiline
@@ -228,6 +228,7 @@ module CssDryer
     commas = false
     css.each { |line|
       next if line =~ /@media/
+      next if line =~ /,.*;\s*$/    # allow comma separated style values
       commas = true if line =~ /,/
     }
     return css unless commas
@@ -253,11 +254,13 @@ module CssDryer
       # - the correct way to do this would be to use a lexer and parser
       if @state.eql? 'flow'
         case input
-        when /^[^,]*$/  # no commas
+        when /^[^,]*$/    # no commas
           @output << input
-        when /@media/   # @media block
+        when /,.*;\s*$/   # comma separated style values
           @output << input
-        when /,/        # commas
+        when /@media/     # @media block
+          @output << input
+        when /,/          # commas
           @state = 'reading_selectors'
           @selectors = []
           @styles = []
@@ -279,7 +282,7 @@ module CssDryer
         case input
         when /\A[^{}]*\Z/           # no braces
           @styles << input
-        when /\A[^,]*[{](.*)[}]/      # inline styles (no commas)
+        when /\A[^,]*[{](.*)[}]/    # inline styles (no commas)
           @styles << (@depth == 0 ? $1 : input)
         when /[{](.*)[}]/           # inline styles (commas)
           @styles << $1
