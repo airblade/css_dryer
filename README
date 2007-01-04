@@ -70,44 +70,47 @@ Install in the usual Rails way.  From your application's directory:
 
 Create a controller to serve your DRY stylesheets:
 
-    script/generate controller dry_css
+    script/generate controller stylesheets
+
+You don't have to call it <code>stylesheets</code> but doing so lets you use Rails' <code>stylesheet_link_tag</code> helper.
 
 Edit the controller so it looks like this:
 
-    class DryCssController < ApplicationController
-      layout nil
-      session :off
-
+    class StylesheetsController < ApplicationController
       before_filter :set_headers
+      after_filter  { |c| c.cache_page }
+      session :off
+      layout nil
 
       private
       def set_headers
-        headers['Content-Type'] = 'text/css'
+        ::ActionController::Base.page_cache_extension = '.css'
+        headers['Content-Type'] = 'text/css; charset=utf-8'
       end
     end
 
-You can then put your stylesheets, DRY or otherwise, in <code>app/views/dry_css/</code>.
+Add this line to your routes in <code>config/routes.rb</code> (note the full stop immediately after the word <code>action</code>):
 
-DRY stylesheets should have a <code>ncss</code> extension -- think 'n' for nested.  For example, <code>site.ncss</code>.
+    map.connect 'stylesheets/:action.:format', :controller => 'stylesheets'
 
-Get them in your views like this:
+You can then put your stylesheets, DRY or otherwise, in <code>app/views/stylesheets/</code>.  Once rendered they will be cached in <code>public/stylesheets/</code>.
 
-    <link href='/dry_css/site' rel='Stylesheet' type='text/css'>
+DRY stylesheet files should have a <code>ncss</code> extension -- think 'n' for nested.  For example, <code>site.ncss</code>.
+
+Get them in your views with a <code>css</code> extension like this:
+
+    <link href='/stylesheets/site.css' rel='Stylesheet' type='text/css'>
+
+or with Rails' <code>stylesheet_link_tag</code> helper:
+
+    <%= stylesheet_link_tag 'site' %>
 
 
 == To Do
 
-* Cache the rendered stylesheets properly.  See Myles Byrne's DCSS[http://myles.id.au/2006/11/20/introducing-dcss/] which appears to (a) allow <code>.dcss</code> files in <code>public/stylesheets</code> and (b) render a <code>.css</code> which is properly cached in production.  See also ActionView::Base.  Note that the cached file must have a .css extension for the content-type to be set correctly to text/css.
+* Make set-up easier by instantiating the controller and adding the route dynamically within <code>init.rb</code>.  See Corey Johnson's code and Miles Byrne's DCSS respectively.
 
 * Split out a separate EXAMPLES document.
-
-* Incorporate a generator into the plugin so that the <code>DryCssController</code> is created automatically.
-
-* Make a stylesheet helper tag to use DRY stylesheets.
-
-* (Make a webpage where you can paste in a DRY stylesheet and get CSS out (without ERB step).)
-
-* (Make a gem version where you can pass in a DRY stylesheet on the command line and get CSS out (without ERB step).)
 
 
 == Alternatives
@@ -118,10 +121,16 @@ Get them in your views like this:
 
 * Styleaby[http://topfunky.net/svn/plugins/styleaby/README]: creates CSS with Ruby syntax.  "An experimental, unauthorized mashup of Scott Barron's stillborn Builder::CSS templates and Why The Lucky Stiff's Markaby templates."
 
+* {Dirt Simple .rcss Templates}[http://blog.hasmanythrough.com/2006/3/23/dirt-simple-rcss-templates] by Josh Susser.  No nesting, just variables.
+
 
 == Credits
 
 The idea came from John Nunemaker on {Rails Tips}[http://railstips.org/2006/12/7/styleaby-css-plugin/].  John beta-tested the code, provided a test case for @media blocks and suggested the controller's body.  Thanks John!
+
+The caching code is based on Topfunky's[http://topfunky.net/svn/plugins/styleaby/lib/stylesheets_controller.rb].
+
+Changing the controller's name to <code>stylesheets</code>, thus allowing one to use Rails' <code>stylesheet_link_tag</code> helper, occurred to me while reading Josh Susser's {Dirt Simple .rcss Templates}[http://blog.hasmanythrough.com/2006/3/23/dirt-simple-rcss-templates].  Once I noticed it, I realised everybody was using a <code>StylesheetsController</code>.  Doh!
 
 
 == Author

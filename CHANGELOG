@@ -2,10 +2,15 @@
 
 Below is a complete list of changes for each revision of CssDryer.
 
+== 0.1.2
+
+* Incompatible with Rails 1.1.6 and below thanks to the use of <code>:format</code> in a route.  Update to Rails 1.2RC1 :)
+* Caches correctly with <code>.css</code> extension.  Updated the README with the necessary changes to the controller and routes.
+* Works with the <code>stylesheet_link_tag</code> helper.  Updated the README with the changes to make this work.
+
 == 0.1.1
 
-* Fixed bug where comma separated style values, e.g. font families, were
-misinterpreted as comma separated selectors.
+* Fixed bug where comma separated style values, e.g. font families, were misinterpreted as comma separated selectors.
 
 == 0.1.0
 
