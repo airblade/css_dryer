@@ -17,7 +17,7 @@ end
 # Converts DRY stylesheets into normal CSS ones.
 module CssDryer
 
-  VERSION = '0.1.2'
+  VERSION = '0.1.3'
 
   class StyleHash < Hash  #:nodoc:
     attr_accessor :multiline
@@ -326,15 +326,27 @@ module CssDryer
       @view = view
     end
 
-    def render(template, local_assigns)
-      @view.controller.headers["Content-Type"] = 'text/css'
-      b = binding
-  
-      local_assigns.stringify_keys!
-      local_assigns.each { |key, value| eval "#{key} = local_assigns[\"#{key}\"]", b }
+    def render(template, assigns)
+      # Based on Agile Web Development With Rails v2, p.520
       
+      # Create an anonymous object and get its binding
+      env = Object.new
+      bind = env.send :binding
+
+      # Add in the instance variables from the view
+      @view.assigns.each do |k, v|
+        env.instance_variable_set "@#{k}", v
+      end
+
+      # And local variables if we're a partial
+      assigns.each do |k, v|
+        eval "#{k} = #{v}", bind
+      end
+
+      @view.controller.headers["Content-Type"] ||= 'text/css'
+
       # Evaluate with ERB
-      dry_css = ERB.new(template).result(b)
+      dry_css = ERB.new(template).result(bind)
       
       # Flatten
       process(dry_css)
