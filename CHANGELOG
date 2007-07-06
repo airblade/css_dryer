@@ -7,6 +7,7 @@ Below is a complete list of changes for each revision of CssDryer.
 * Commas in comments are sometimes replaced with a space to prevent them from being interpreted as selectors (thanks to Adrian Prodan for the bug report).  Yes, this is a shameful hack.
 * Added tests for multiline comments and comments containing blank lines (suggested by Phil Crosby).
 * Added a section on how comments are handled to the README.
+* Removed page_cache_extension line from the StylesheetsController code.  It was unnecessary and forced all cached pages, including HTML ones, to have a .css extension.
 
 == 0.1.3
 

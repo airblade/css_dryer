@@ -114,7 +114,6 @@ Edit the controller so it looks like this:
 
       private
       def set_headers
-        ::ActionController::Base.page_cache_extension = '.css'
         headers['Content-Type'] = 'text/css; charset=utf-8'
       end
     end
