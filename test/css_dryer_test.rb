@@ -741,4 +741,35 @@ html p {
 END
   end
 
+  def test_should_handle_comments_with_blank_lines
+    input = <<END
+/*
+ * comment
+
+ */
+html {
+  /* 
+
+   */
+  p {
+    color: blue;
+  }
+}
+END
+    assert_equal <<END, process(input)
+/*
+ * comment
+
+ */
+html {
+  /* 
+
+   */
+}
+html p {
+  color: blue;
+}
+END
+  end
+
 end
