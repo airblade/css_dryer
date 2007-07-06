@@ -706,4 +706,39 @@ body {
 END
   end
 
+  def test_should_handle_multiline_comments
+    input = <<END
+/*
+ * Multilined comment outside a selector.
+ */
+html {
+  /* 
+   * Multilined comment inside a selector.
+   */
+  p {
+     /*
+     * And another one.
+     */
+    color: blue;
+  }
+}
+END
+    assert_equal <<END, process(input)
+/*
+ * Multilined comment outside a selector.
+ */
+html {
+  /* 
+   * Multilined comment inside a selector.
+   */
+}
+html p {
+  /*
+  * And another one.
+  */
+  color: blue;
+}
+END
+  end
+
 end
