@@ -775,4 +775,34 @@ html p {
 END
   end
 
+  def test_should_handle_comments_with_commas
+    input = <<END
+/********************************************************* 
+ Structural styling, sizing and positioning of elements
+ ********************************************************/
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  z-index: 2;
+}
+END
+    assert_equal <<END, process(input)
+/********************************************************* 
+ Structural styling  sizing and positioning of elements
+ ********************************************************/
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  z-index: 2;
+}
+END
+  end
 end

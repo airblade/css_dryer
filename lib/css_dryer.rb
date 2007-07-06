@@ -17,7 +17,7 @@ end
 # Converts DRY stylesheets into normal CSS ones.
 module CssDryer
 
-  VERSION = '0.1.3'
+  VERSION = '0.1.4'
 
   class StyleHash < Hash  #:nodoc:
     attr_accessor :multiline
@@ -226,11 +226,11 @@ module CssDryer
   def factor_out_comma_separated_selectors(css, indent = 2)  #:nodoc:
     # TODO: replace with a nice regex
     commas = false
-    css.each { |line|
+    css.each do |line|
       next if line =~ /@media/
       next if line =~ /,.*;\s*$/    # allow comma separated style values
       commas = true if line =~ /,/
-    }
+    end
     return css unless commas
 
     state_machine = StateMachine.new indent
@@ -250,10 +250,13 @@ module CssDryer
       @output.join
     end
     def act_on(input)
-      # Implemenation notes:
+      # Implementation notes:
       # - the correct way to do this would be to use a lexer and parser
       if @state.eql? 'flow'
         case input
+        when %r{/[*]}  # open comment
+          @state = 'reading_comments'
+          act_on input
         when /^[^,]*$/    # no commas
           @output << input
         when /,.*;\s*$/   # comma separated style values
@@ -265,6 +268,16 @@ module CssDryer
           @selectors = []
           @styles = []
           act_on input
+        end
+        return
+
+      elsif @state.eql? 'reading_comments'
+        # Dodgy hack: remove commas from comments so that the
+        # factor_out_comma_separated_selectors method doesn't
+        # go into an infinite loop.
+        @output << input.gsub(',', ' ')
+        if input =~ %r{[*]/}   # close comment
+          @state = 'flow'
         end
         return
 

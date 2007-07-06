@@ -41,9 +41,9 @@ The CssDryer eliminates both of these sources allowing you to write DRY, pleasin
 
 Note, though, that <code>@media</code> blocks are preserved.  For example:
 
-    @media screen, projection {
-      div {font-size:100%;}
-    }
+  @media screen, projection {
+    div {font-size:100%;}
+  }
 
 is left unchanged.
 
@@ -57,6 +57,36 @@ See CssDryer for more details.
 The CssDryer handles nested descendant, child, adjacent, class, pseudo-class, attribute and id selectors.
 
 Multiple comma separated selectors are now supported.
+
+
+== Comments
+
+Comments on nested selectors do not get 'flattened' or de-nested with their selector.  For example comment B will be left inside the html selector below:
+
+Before:
+
+  /* Comment A */
+  html {
+    /* Comment B */
+    p {
+      color: blue;
+    }
+  }
+
+After:
+
+  /* Comment A */
+  html {
+    /* Comment B */
+  }
+  html p {
+      color: blue;
+    }
+  }
+
+This is suboptimal but I hope not too inconvenient.
+
+Please also note that commas in comments will sometimes be replaced with a space.  This is due to a shameful hack in the code that handles comma-separated selectors.
 
 
 == Installation

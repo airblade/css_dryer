@@ -2,6 +2,12 @@
 
 Below is a complete list of changes for each revision of CssDryer.
 
+== 0.1.4
+
+* Commas in comments are sometimes replaced with a space to prevent them from being interpreted as selectors (thanks to Adrian Prodan for the bug report).  Yes, this is a shameful hack.
+* Added tests for multiline comments and comments containing blank lines (suggested by Phil Crosby).
+* Added a section on how comments are handled to the README.
+
 == 0.1.3
 
 * Instance and local variables from the controller now available within stylesheets (thanks to Rifraf for prodding me into action).
