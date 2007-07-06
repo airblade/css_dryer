@@ -744,30 +744,33 @@ END
   def test_should_handle_comments_with_blank_lines
     input = <<END
 /*
- * comment
+ * This is a multiline comment.
 
  */
 html {
-  /* 
+  color: blue;
+  /*
+   * This is a multiline comment.
 
    */
   p {
-    color: blue;
+    color: red;
   }
 }
 END
     assert_equal <<END, process(input)
 /*
- * comment
+ * This is a multiline comment.
 
  */
 html {
-  /* 
-
+  color: blue;
+  /*
+   * This is a multiline comment.
    */
 }
 html p {
-  color: blue;
+  color: red;
 }
 END
   end
