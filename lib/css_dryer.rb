@@ -17,7 +17,7 @@ end
 # Converts DRY stylesheets into normal CSS ones.
 module CssDryer
 
-  VERSION = '0.1.4'
+  VERSION = '0.1.5'
 
   class StyleHash < Hash  #:nodoc:
     attr_accessor :multiline
@@ -339,7 +339,9 @@ module CssDryer
       @view = view
     end
 
-    def render(template, assigns)
+    # The filepath parameter is there only for compatibility with Markaby.
+    # It is not used.
+    def render(template, assigns, filepath = nil)
       # Based on Agile Web Development With Rails v2, p.520
       
       # Create an anonymous object and get its binding

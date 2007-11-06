@@ -2,6 +2,10 @@
 
 Below is a complete list of changes for each revision of CssDryer.
 
+== 0.1.5
+
+* Achieved compatibility with Markaby by adding filepath paramater to template rendering (NcssHandler#render) method signature (incompatibility reported by Ray Carrasco).
+
 == 0.1.4
 
 * Commas in comments are sometimes replaced with a space to prevent them from being interpreted as selectors (thanks to Adrian Prodan for the bug report).  Yes, this is a shameful hack.
