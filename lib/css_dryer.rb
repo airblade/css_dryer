@@ -17,7 +17,7 @@ end
 # Converts DRY stylesheets into normal CSS ones.
 module CssDryer
 
-  VERSION = '0.2.0'
+  VERSION = '0.2.1'
 
   class StyleHash < Hash  #:nodoc:
     attr_accessor :multiline
@@ -359,11 +359,11 @@ module CssDryer
         @view.instance_eval code
       end
 
-      dry_css = compiled(template).result(@view.send(:binding))
+      dry_css = compile(template).result(@view.send(:binding))
       process(dry_css)
     end
 
-    def compiled(template)
+    def compile(template)
       ::ERB.new(template, nil, @view.erb_trim_mode)
     end
   end
