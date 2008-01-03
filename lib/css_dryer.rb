@@ -17,7 +17,7 @@ end
 # Converts DRY stylesheets into normal CSS ones.
 module CssDryer
 
-  VERSION = '0.1.5'
+  VERSION = '0.2.0'
 
   class StyleHash < Hash  #:nodoc:
     attr_accessor :multiline
@@ -341,30 +341,30 @@ module CssDryer
 
     # The filepath parameter is there only for compatibility with Markaby.
     # It is not used.
-    def render(template, assigns, filepath = nil)
-      # Based on Agile Web Development With Rails v2, p.520
-      
-      # Create an anonymous object and get its binding
-      env = Object.new
-      bind = env.send :binding
-
-      # Add in the instance variables from the view
-      @view.assigns.each do |k, v|
-        env.instance_variable_set "@#{k}", v
+    def render(template, local_assigns, filepath = nil)
+      # Assign instance variables from the controller to the view.
+      @view.assigns.each do |k,v|
+        @view.send :instance_variable_set, "@#{k}", v
       end
 
-      # And local variables if we're a partial
-      assigns.each do |k, v|
-        eval "#{k} = #{v}", bind
+      # Make local variables available to partials.
+      local_assigns.each do |k,v|
+        code = "def #{k}\n"
+        code << case v
+                when String: %Q{'#{v}'}
+                when nil: '""'
+                else "#{v}"
+                end
+        code << "\nend\n"
+        @view.instance_eval code
       end
 
-      @view.controller.headers["Content-Type"] ||= 'text/css'
-
-      # Evaluate with ERB
-      dry_css = ERB.new(template).result(bind)
-      
-      # Flatten
+      dry_css = compiled(template).result(@view.send(:binding))
       process(dry_css)
+    end
+
+    def compiled(template)
+      ::ERB.new(template, nil, @view.erb_trim_mode)
     end
   end
 end

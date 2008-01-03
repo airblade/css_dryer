@@ -89,6 +89,24 @@ This is suboptimal but I hope not too inconvenient.
 Please also note that commas in comments will sometimes be replaced with a space.  This is due to a shameful hack in the code that handles comma-separated selectors.
 
 
+== Partials
+
+You may use partial nested stylesheets as you would with normal templates.  For example, assuming your controller(s) set the @user variable and a User has a background colour:
+
+app/views/stylesheets/site.ncss:
+
+  body {
+    <%= render :partial => 'content', :locals => {:background => @user.background} %>
+  }
+
+app/views/stylesheets/_content.ncss:
+
+  #content {
+    background: <%= background %>;
+    margin: 10px;
+  }
+
+
 == Installation
 
 Install in the usual Rails way.  From your application's directory:
@@ -137,9 +155,9 @@ or with Rails' <code>stylesheet_link_tag</code> helper:
 
 == To Do
 
-* Make set-up easier by instantiating the controller and adding the route dynamically within <code>init.rb</code>.  See Corey Johnson's code and Miles Byrne's DCSS respectively.
-
+* Generator for stylesheets controller.
 * Split out a separate EXAMPLES document.
+* Replace regexp-based nested-stylesheet parser with a Treetop parser.
 
 
 == Alternatives

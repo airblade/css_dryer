@@ -2,6 +2,11 @@
 
 Below is a complete list of changes for each revision of CssDryer.
 
+== 0.2.0
+
+* Supports partial templates.
+* Works with Rails's template compilation mechanism.
+
 == 0.1.5
 
 * Achieved compatibility with Markaby by adding filepath paramater to template rendering (NcssHandler#render) method signature (incompatibility reported by Ray Carrasco).
