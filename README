@@ -91,18 +91,29 @@ Please also note that commas in comments will sometimes be replaced with a space
 
 == Partials
 
-You may use partial nested stylesheets as you would with normal templates.  For example, assuming your controller(s) set the @user variable and a User has a background colour:
+You may use partial nested stylesheets as you would with normal templates.  For example, assuming your controller(s) set the @user variable and a User has a background colour (red):
 
 app/views/stylesheets/site.ncss:
 
   body {
+    color: blue;
     <%= render :partial => 'content', :locals => {:background => @user.background} %>
   }
 
 app/views/stylesheets/_content.ncss:
 
-  #content {
+  div#content {
     background: <%= background %>;
+    margin: 10px;
+  }
+
+And all this would render to site.css:
+
+  body {
+    color: blue;
+  }
+  body div#content {
+    background: red;
     margin: 10px;
   }
 
