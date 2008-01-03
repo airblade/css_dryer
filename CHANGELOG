@@ -2,6 +2,11 @@
 
 Below is a complete list of changes for each revision of CssDryer.
 
+== 0.2.1
+
+* Fixed typo with name of NcssHandler's compile method.
+* Elaborated README's partials example.
+
 == 0.2.0
 
 * Supports partial templates.
