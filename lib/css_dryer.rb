@@ -17,7 +17,7 @@ end
 # Converts DRY stylesheets into normal CSS ones.
 module CssDryer
 
-  VERSION = '0.2.1'
+  VERSION = '0.2.2'
 
   class StyleHash < Hash  #:nodoc:
     attr_accessor :multiline
@@ -335,6 +335,10 @@ module CssDryer
     include CssDryer
     include ERB::Util
 
+    def self.line_offset
+      0
+    end
+
     def initialize(view)
       @view = view
     end
@@ -351,8 +355,8 @@ module CssDryer
       local_assigns.each do |k,v|
         code = "def #{k}\n"
         code << case v
-                when String: %Q{'#{v}'}
-                when nil: '""'
+                when String then %Q{'#{v}'}
+                when nil    then  "''"
                 else "#{v}"
                 end
         code << "\nend\n"
