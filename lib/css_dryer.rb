@@ -363,15 +363,9 @@ module CssDryer
         @view.instance_eval code
       end
 
-      #dry_css = compile(template).result(@view.send(:binding))
       dry_css = ::ERB.new(template, nil, @view.erb_time_mode).result(@view.send(:binding))
       process(dry_css)
     end
 
-=begin
-    def compile(template)
-      ::ERB.new(template, nil, @view.erb_trim_mode)
-    end
-=end
   end
 end
