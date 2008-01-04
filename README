@@ -169,6 +169,7 @@ or with Rails' <code>stylesheet_link_tag</code> helper:
 * Generator for stylesheets controller.
 * Split out a separate EXAMPLES document.
 * Replace regexp-based nested-stylesheet parser with a Treetop parser.
+* Make CssDryer work with Rails's asset packaging.
 
 
 == Alternatives

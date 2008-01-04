@@ -335,10 +335,6 @@ module CssDryer
     include CssDryer
     include ERB::Util
 
-    def self.line_offset
-      0
-    end
-
     def initialize(view)
       @view = view
     end
@@ -364,6 +360,9 @@ module CssDryer
       end
 
       dry_css = ::ERB.new(template, nil, @view.erb_time_mode).result(@view.send(:binding))
+      # This processing step, where we un-nest the stylesheet, is the reason we
+      # render the template rather than compile it.  Compilation would not allow
+      # us to get at the evaluated ERB and then un-nest it.
       process(dry_css)
     end
 

@@ -4,7 +4,7 @@ Below is a complete list of changes for each revision of CssDryer.
 
 == 0.2.2
 
-* Removed compilation step because it doesn't allow post-processing after all.
+* Removed compilation step because it doesn't allow post-processing.
 
 == 0.2.1
 
