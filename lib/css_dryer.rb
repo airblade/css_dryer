@@ -17,7 +17,7 @@ end
 # Converts DRY stylesheets into normal CSS ones.
 module CssDryer
 
-  VERSION = '0.2.2'
+  VERSION = '0.2.3'
 
   class StyleHash < Hash  #:nodoc:
     attr_accessor :multiline
@@ -359,7 +359,7 @@ module CssDryer
         @view.instance_eval code
       end
 
-      dry_css = ::ERB.new(template, nil, @view.erb_time_mode).result(@view.send(:binding))
+      dry_css = ::ERB.new(template, nil, @view.erb_trim_mode).result(@view.send(:binding))
       # This processing step, where we un-nest the stylesheet, is the reason we
       # render the template rather than compile it.  Compilation would not allow
       # us to get at the evaluated ERB and then un-nest it.

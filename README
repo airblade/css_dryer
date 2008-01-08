@@ -120,6 +120,8 @@ And all this would render to site.css:
 
 == Installation
 
+Version 0.2+ of the plugin requires Rails 2.
+
 Install in the usual Rails way.  From your application's directory:
 
     script/plugin install http://opensource.airbladesoftware.com/trunk/plugins/css_dryer

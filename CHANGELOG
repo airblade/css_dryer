@@ -2,6 +2,10 @@
 
 Below is a complete list of changes for each revision of CssDryer.
 
+== 0.2.3
+
+* Fixed typo in NcssHandler#render (reported by Ryan Kuykendall).
+
 == 0.2.2
 
 * Removed compilation step because it doesn't allow post-processing.
@@ -15,6 +19,7 @@ Below is a complete list of changes for each revision of CssDryer.
 
 * Supports partial templates.
 * Works with Rails's template compilation mechanism.
+* Requires Rails 2.
 
 == 0.1.5
 
