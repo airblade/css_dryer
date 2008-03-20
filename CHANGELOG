@@ -2,6 +2,10 @@
 
 Below is a complete list of changes for each revision of CssDryer.
 
+== 0.2.5
+
+* Added a generator for convenience.
+
 == 0.2.4
 
 * Fixed README to use proper Markdown syntax for links.

@@ -17,7 +17,7 @@ end
 # Converts DRY stylesheets into normal CSS ones.
 module CssDryer
 
-  VERSION = '0.2.4'
+  VERSION = '0.2.5'
 
   class StyleHash < Hash  #:nodoc:
     attr_accessor :multiline

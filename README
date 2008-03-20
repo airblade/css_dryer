@@ -121,40 +121,37 @@ And all this would render to site.css:
 
 ## Installation
 
-Version 0.2+ of the plugin requires Rails 2.
+Pre-requisite: Rails 2.
 
-Install in the usual Rails way.  From your application's directory:
+First, install in the usual Rails way.  From your application's directory:
 
-    script/plugin install http://opensource.airbladesoftware.com/trunk/plugins/css_dryer
+  $ script/plugin install http://opensource.airbladesoftware.com/trunk/plugins/css_dryer
 
+Second, generate the stylesheets controller and helper, and a test nested stylesheet:
+
+  $ script/generate css_dryer
+
+Third, add a named route to your config/routes.rb:
+
+  map.stylesheets 'stylesheets/:action.:format', :controller => 'stylesheets'
+
+Verify that everything is working by visiting this URL:
+
+  http://0.0.0.0:3000/stylesheets/test.css
+
+You should see this output:
+
+  body {
+    color: blue;
+  }
+  body p {
+    color: red;
+  }
     
+
 ## Usage
 
-Create a controller to serve your DRY stylesheets:
-
-    script/generate controller stylesheets
-
-You don't have to call it <code>stylesheets</code> but doing so lets you use Rails' <code>stylesheet_link_tag</code> helper.
-
-Edit the controller so it looks like this:
-
-    class StylesheetsController < ApplicationController
-      before_filter :set_headers
-      after_filter  { |c| c.cache_page }
-      session :off
-      layout nil
-
-      private
-      def set_headers
-        headers['Content-Type'] = 'text/css; charset=utf-8'
-      end
-    end
-
-Add this line to your routes in <code>config/routes.rb</code> (note the full stop immediately after the word <code>action</code>):
-
-    map.connect 'stylesheets/:action.:format', :controller => 'stylesheets'
-
-You can then put your stylesheets, DRY or otherwise, in <code>app/views/stylesheets/</code>.  Once rendered they will be cached in <code>public/stylesheets/</code>.
+You put your stylesheets, DRY or otherwise, in <code>app/views/stylesheets/</code>.  Once rendered they will be cached in <code>public/stylesheets/</code>.
 
 DRY stylesheet files should have a <code>ncss</code> extension -- think 'n' for nested.  For example, <code>site.ncss</code>.
 
@@ -170,22 +167,21 @@ or with Rails' <code>stylesheet_link_tag</code> helper:
 ## To Do
 
 * Package as a gem as well as a plugin.
-* Merb compatability.
-* Generator for stylesheets controller.
+* Merb compatibility.
 * Split out a separate EXAMPLES document.
 * Replace regexp-based nested-stylesheet parser with a Treetop parser.
-* Make CssDryer work with Rails's asset packaging.
+* Make CssDryer work with Rails' asset packaging.
 
 
 ## Alternatives
 
-* [RCSS] [1]: ERB, server-side constants, server-side classes and command line execution.  No nesting as such, though server-side classes offer a form of inheritance.
+* [RCSS][1]: ERB, server-side constants, server-side classes and command line execution.  No nesting as such, though server-side classes offer a form of inheritance.
 
-* [DCSS] [2] (written up [here] [3]): server-side constants, different syntax.  Descendant selectors only.
+* [DCSS][2] (written up [here][3]): server-side constants, different syntax.  Descendant selectors only.
 
-* [Styleaby] [4] creates CSS with Ruby syntax.  "An experimental, unauthorized mashup of Scott Barron's stillborn Builder::CSS templates and Why The Lucky Stiff's Markaby templates."
+* [Styleaby][4] creates CSS with Ruby syntax.  "An experimental, unauthorized mashup of Scott Barron's stillborn Builder::CSS templates and Why The Lucky Stiff's Markaby templates."
 
-* [Dirt Simple .rcss Templates] [5] by Josh Susser.  No nesting, just variables.
+* [Dirt Simple .rcss Templates][5] by Josh Susser.  No nesting, just variables.
 
 [1]: http://rubyforge.org/projects/rcss
 [2]: http://rubyforge.org/projects/dcss
@@ -196,11 +192,11 @@ or with Rails' <code>stylesheet_link_tag</code> helper:
 
 ## Credits
 
-The idea came from John Nunemaker on [Rails Tips] [6].  John beta-tested the code, provided a test case for @media blocks and suggested the controller's body.  Thanks John!
+The idea came from John Nunemaker on [Rails Tips][6].  John beta-tested the code, provided a test case for @media blocks and suggested the controller's body.  Thanks John!
 
-The caching code is based on [Topfunky's] [7].
+The caching code is based on [Topfunky's][7].
 
-Changing the controller's name to <code>stylesheets</code>, thus allowing one to use Rails' <code>stylesheet_link_tag</code> helper, occurred to me while reading Josh Susser's [Dirt Simple .rcss Templates] [5].  Once I noticed it, I realised everybody was using a <code>StylesheetsController</code>.  Doh!
+Changing the controller's name to <code>stylesheets</code>, thus allowing one to use Rails' <code>stylesheet_link_tag</code> helper, occurred to me while reading Josh Susser's [Dirt Simple .rcss Templates][5].  Once I noticed it, I realised everybody was using a <code>StylesheetsController</code>.  Doh!
 
 [6]: http://railstips.org/2006/12/7/styleaby-css-plugin/
 [7]: http://topfunky.net/svn/plugins/styleaby/lib/stylesheets_controller.rb
@@ -208,7 +204,7 @@ Changing the controller's name to <code>stylesheets</code>, thus allowing one to
 
 ## Author
 
-[Andrew Stewart] [8], [AirBlade Software] [9].
+[Andrew Stewart][8], [AirBlade Software][9].
 
 [8]: mailto:boss@airbladesoftware.com
 [9]: http://airbladesoftware.com
