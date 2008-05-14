@@ -2,6 +2,13 @@
 
 Below is a complete list of changes for each revision of CssDryer.
 
+== 0.2.6
+
+* Added a few browser hacks to StylesheetsHelper (thanks to René for the idea).
+* Add self-clearing to Stylesheets helper.
+* Added test that reproduces bug where css_dryer forgives missing closing brace.  Just need to make it pass :-)
+* Added section on StylesheetsHelper to README.
+
 == 0.2.5
 
 * Added a generator for convenience.

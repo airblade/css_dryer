@@ -119,6 +119,39 @@ And all this would render to site.css:
   }
 
 
+## Remember the helper
+
+Browser hacks are an ugly necessity in any non-trivial stylesheet.  They clutter up your stylesheet without actually adding anything.  They make you sad.
+
+So encapsulate them in the StylesheetsHelper instead.  Separate your lovely CSS from the decidely unlovely hacks.  For example:
+
+app/views/stylesheets/site.ncss:
+
+  <% ie7 do %>
+    #sidebar {
+      padding: 4px;
+    }
+  <% end %>
+
+This renders to site.css:
+
+  *+html #sidebar {
+    padding: 4px;
+  }
+
+In this example the hacky selector, "*+html", isn't too bad.  However some hacks are pretty long-winded, and soon you'll thank yourself for moving them out of your nested stylesheet.
+
+You don't have to limit yourself to browser hacks.  Consider self-clearing: to make an element clear itself requires 13 lines of CSS, in 3 selector blocks, by my count.  To make a second element clear itself, you need to add the element's selector to each of those three blocks.  It's fiddly.  And your stylesheet gets harder and harder to understand.
+
+We can do better:
+
+app/views/stylesheets/site.ncss:
+
+  <%= self_clear 'div.foo', 'div.bar', 'baz' %>
+
+Self-clear as many elements as you like in one easy line.
+
+
 ## Installation
 
 Pre-requisite: Rails 2.
@@ -166,11 +199,11 @@ or with Rails' <code>stylesheet_link_tag</code> helper:
 
 ## To Do
 
+* Make CssDryer work with Rails' asset packaging: incorporate Dan Walters' code on GitHub.
 * Package as a gem as well as a plugin.
+* Replace regexp-based nested-stylesheet parser with a Treetop parser.
 * Merb compatibility.
 * Split out a separate EXAMPLES document.
-* Replace regexp-based nested-stylesheet parser with a Treetop parser.
-* Make CssDryer work with Rails' asset packaging.
 
 
 ## Alternatives

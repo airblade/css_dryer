@@ -805,4 +805,22 @@ body {
 }
 END
   end
+
+  def test_should_fail_on_missing_closing_brace
+    input = <<END
+* html {
+  body {
+    padding: 4px;
+  }
+END
+    # TODO: decide what css_dryer should do with invalid input.
+    # Currently it doesn't test for CSS or nested CSS validity,
+    # and here it (accidentally) automagically replaces missing
+    # brace.  Handy, but a recipe for disaster.
+    assert_not_equal <<END, process(input)
+* html body {
+  padding: 4px;
+}
+END
+  end
 end
