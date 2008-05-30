@@ -2,14 +2,23 @@ module StylesheetsHelper
 
   # Internet Exploder hacks.
 
+  # <% ie6 do %>
+  #   css for ie6 here
+  # <% end %>
   def ie6(&block)
     wrap '* html', &block
   end
 
+  # <% ie7 do %>
+  #   css for ie7 here
+  # <% end %>
   def ie7(&block)
     wrap '*+html', &block
   end
 
+  # <% ie do %>
+  #   css for ie here
+  # <% end %>
   def ie(&block)
     ie6(&block) + ie7(&block)
   end
