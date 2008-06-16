@@ -350,7 +350,7 @@ module CssDryer
       end
 
       # Make local variables available to partials.
-      templates.locals.each do |k,v|
+      template.locals.each do |k,v|
         code = "def #{k}\n"
         code << case v
                 when String then %Q{'#{v}'}
