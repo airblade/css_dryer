@@ -17,7 +17,7 @@ end
 # Converts DRY stylesheets into normal CSS ones.
 module CssDryer
 
-  VERSION = '0.2.6'
+  VERSION = '0.2.7'
 
   class StyleHash < Hash  #:nodoc:
     attr_accessor :multiline
@@ -339,16 +339,18 @@ module CssDryer
       @view = view
     end
 
-    # The filepath parameter is there only for compatibility with Markaby.
-    # It is not used.
-    def render(template, local_assigns, filepath = nil)
+    def compilable?
+      false
+    end
+
+    def render(template)
       # Assign instance variables from the controller to the view.
       @view.assigns.each do |k,v|
         @view.send :instance_variable_set, "@#{k}", v
       end
 
       # Make local variables available to partials.
-      local_assigns.each do |k,v|
+      templates.locals.each do |k,v|
         code = "def #{k}\n"
         code << case v
                 when String then %Q{'#{v}'}
@@ -359,7 +361,7 @@ module CssDryer
         @view.instance_eval code
       end
 
-      dry_css = ::ERB.new(template, nil, @view.erb_trim_mode).result(@view.send(:binding))
+      dry_css = ::ERB.new(template.source, nil, @view.erb_trim_mode).result(@view.send(:binding))
       # This processing step, where we un-nest the stylesheet, is the reason we
       # render the template rather than compile it.  Compilation would not allow
       # us to get at the evaluated ERB and then un-nest it.
