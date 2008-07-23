@@ -17,7 +17,7 @@ end
 # Converts DRY stylesheets into normal CSS ones.
 module CssDryer
 
-  VERSION = '0.2.7'
+  VERSION = '0.2.8'
 
   class StyleHash < Hash  #:nodoc:
     attr_accessor :multiline
@@ -344,11 +344,6 @@ module CssDryer
     end
 
     def render(template)
-      # Assign instance variables from the controller to the view.
-      @view.assigns.each do |k,v|
-        @view.send :instance_variable_set, "@#{k}", v
-      end
-
       # Make local variables available to partials.
       template.locals.each do |k,v|
         code = "def #{k}\n"
