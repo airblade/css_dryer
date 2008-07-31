@@ -59,6 +59,6 @@ module StylesheetsHelper
   def wrap(with, &block)
     concat "#{with} {", block.binding
     yield
-    concat '}', block.binding
+    concat "}\n", block.binding
   end
 end

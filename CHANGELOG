@@ -4,6 +4,7 @@ Below is a complete list of changes for each revision of CssDryer.
 
 == 0.2.8
 
+* Fixed bug in Stylesheets Helper affecting ie6 method (thanks to René).
 * Removed code in +render+ method made redundant by Rails 2.1.
 
 == 0.2.7
@@ -13,7 +14,7 @@ Below is a complete list of changes for each revision of CssDryer.
 == 0.2.6
 
 * Added a few browser hacks to StylesheetsHelper (thanks to René for the idea).
-* Add self-clearing to Stylesheets helper.
+* Add self-clearing to StylesheetsHelper.
 * Added test that reproduces bug where css_dryer forgives missing closing brace.  Just need to make it pass :-)
 * Added section on StylesheetsHelper to README.
 
