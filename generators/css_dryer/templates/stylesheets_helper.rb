@@ -13,7 +13,7 @@ module StylesheetsHelper
   #   css for ie7 here
   # <% end %>
   def ie7(&block)
-    wrap '*+html', &block
+    wrap '* + html', &block
   end
 
   # <% ie do %>
@@ -26,7 +26,13 @@ module StylesheetsHelper
   # Self-clearing.  For example:
   #
   # <%= self_clear 'div#foo', 'img.bar', 'p ul' %>
+  #
+  # You can pass a hash as the final argument with these options:
+  #   :clear => 'left' | 'right' | 'both' (default)
   def self_clear(*selectors)
+    options = selectors.extract_options!
+    clear = options[:clear] || 'both'
+
     selector_template = lambda { |proc| selectors.map{ |s| proc.call s }.join ', ' }
 
     p = lambda { |selector| "#{selector}:after" }
@@ -38,7 +44,7 @@ module StylesheetsHelper
       content: ".";
       display: block;
       height: 0;
-      clear: both;
+      clear: #{clear};
       visibility: hidden;
     }
     #{selector_template.call q} {
