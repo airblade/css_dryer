@@ -200,7 +200,9 @@ or with Rails' <code>stylesheet_link_tag</code> helper:
 ## To Do
 
 * Make CssDryer work with Rails' asset packaging: incorporate Dan Walters' code on GitHub.
+* Rake task to generate and write .css files from .ncss ones.
 * Package as a gem as well as a plugin.
+* Configuration, e.g. #implicit_nested_divs = true
 * Replace regexp-based nested-stylesheet parser with a Treetop parser.
 * Merb compatibility.
 * Split out a separate EXAMPLES document.
