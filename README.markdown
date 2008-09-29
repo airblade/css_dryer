@@ -53,7 +53,7 @@ The original whitespace is preserved as much as possible.
 
 ## Which Selectors Are Supported?
 
-CssDryer handles all [CSS 2.1 selectors]9http://www.w3.org/TR/CSS21/selector.html): nested descendant, child, adjacent, class, pseudo-class, attribute and id selectors.
+CssDryer handles all [CSS 2.1 selectors](http://www.w3.org/TR/CSS21/selector.html): nested descendant, child, adjacent, class, pseudo-class, attribute and id selectors.
 
 Multiple comma separated selectors are also supported.
 
@@ -237,7 +237,7 @@ Changing the controller's name to `stylesheets`, thus allowing one to use Rails'
 
 ## Author
 
-[Andrew Stewart][8], [AirBlade Software][9].
+[Andrew Stewart][8], [AirBlade Software Ltd][9].
 
 [8]: mailto:boss@airbladesoftware.com
 [9]: http://airbladesoftware.com
