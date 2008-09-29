@@ -12,52 +12,50 @@ There are two sources of repetition in CSS:
 
 Nested selectors lead to CSS like this:
 
-  div           { font-family: Verdana; }
-  div#content   { background-color: green; }
-  div#content p { color: red; }
+    div           { font-family: Verdana; }
+    div#content   { background-color: green; }
+    div#content p { color: red; }
 
-Note the triple repetition of <code>div</code> and the double repetition of <code>#content</code>.
+Note the triple repetition of `div` and the double repetition of `#content`.
 
 The lack of variables leads to CSS like this:
 
-  .sidebar { border: 1px solid #fefefe; }
-  .content { color: #fefefe; }
+    .sidebar { border: 1px solid #fefefe; }
+    .content { color: #fefefe; }
 
-Note the repeated colour <code>#fefefe</code>.
+Note the repeated colour `#fefefe`.
 
-The CssDryer eliminates both of these sources allowing you to write DRY, pleasing stylesheets.  The examples above become:
+CssDryer eliminates both of these sources allowing you to write DRY, pleasing stylesheets.  The examples above become:
 
-  <% dark_grey = '#fefefe' %>
+    <% dark_grey = '#fefefe' %>
 
-  div {
-    font-family: Verdana;
-    #content {
-      background-color: green;
-      p { color: red; }
+    div {
+      font-family: Verdana;
+      #content {
+        background-color: green;
+        p { color: red; }
+      }
     }
-  }
 
-  .sidebar { border: 1 px solid <%= dark_grey %>; }
-  .content { color: <%= dark_grey %>; }
+    .sidebar { border: 1 px solid <%= dark_grey %>; }
+    .content { color: <%= dark_grey %>; }
 
-Note, though, that <code>@media</code> blocks are preserved.  For example:
+Note, though, that `@media` blocks are preserved.  For example:
 
-  @media screen, projection {
-    div {font-size:100%;}
-  }
+    @media screen, projection {
+      div {font-size:100%;}
+    }
 
 is left unchanged.
 
 The original whitespace is preserved as much as possible.
 
-See CssDryer for more details.
-
 
 ## Which Selectors Are Supported?
 
-The CssDryer handles nested descendant, child, adjacent, class, pseudo-class, attribute and id selectors.
+CssDryer handles nested descendant, child, adjacent, class, pseudo-class, attribute and id selectors.
 
-Multiple comma separated selectors are now supported.
+Multiple comma separated selectors are also supported.
 
 
 ## Comments
@@ -66,24 +64,23 @@ Comments on nested selectors do not get 'flattened' or de-nested with their sele
 
 Before:
 
-  /* Comment A */
-  html {
-    /* Comment B */
-    p {
-      color: blue;
+    /* Comment A */
+    html {
+      /* Comment B */
+      p {
+        color: blue;
+      }
     }
-  }
 
 After:
 
-  /* Comment A */
-  html {
-    /* Comment B */
-  }
-  html p {
+    /* Comment A */
+    html {
+      /* Comment B */
+    }
+    html p {
       color: blue;
     }
-  }
 
 This is suboptimal but I hope not too inconvenient.
 
@@ -94,29 +91,29 @@ Please also note that commas in comments will sometimes be replaced with a space
 
 You may use partial nested stylesheets as you would with normal templates.  For example, assuming your controller(s) set the @user variable and a User has a background colour (red):
 
-app/views/stylesheets/site.ncss:
+`app/views/stylesheets/site.ncss`:
 
-  body {
-    color: blue;
-    <%= render :partial => 'content', :locals => {:background => @user.background} %>
-  }
+    body {
+      color: blue;
+      <%= render :partial => 'content', :locals => {:background => @user.background} %>
+    }
 
-app/views/stylesheets/_content.ncss:
+`app/views/stylesheets/_content.ncss`:
 
-  div#content {
-    background: <%= background %>;
-    margin: 10px;
-  }
+    div#content {
+      background: <%= background %>;
+      margin: 10px;
+    }
 
-And all this would render to site.css:
+And all this would render to `site.css`:
 
-  body {
-    color: blue;
-  }
-  body div#content {
-    background: red;
-    margin: 10px;
-  }
+    body {
+      color: blue;
+    }
+    body div#content {
+      background: red;
+      margin: 10px;
+    }
 
 
 ## Remember the helper
@@ -125,29 +122,29 @@ Browser hacks are an ugly necessity in any non-trivial stylesheet.  They clutter
 
 So encapsulate them in the StylesheetsHelper instead.  Separate your lovely CSS from the decidely unlovely hacks.  For example:
 
-app/views/stylesheets/site.ncss:
+`app/views/stylesheets/site.ncss`:
 
-  <% ie7 do %>
-    #sidebar {
+    <% ie7 do %>
+      #sidebar {
+        padding: 4px;
+      }
+    <% end %>
+
+This renders to `site.css`:
+
+    *+html #sidebar {
       padding: 4px;
     }
-  <% end %>
 
-This renders to site.css:
-
-  *+html #sidebar {
-    padding: 4px;
-  }
-
-In this example the hacky selector, "*+html", isn't too bad.  However some hacks are pretty long-winded, and soon you'll thank yourself for moving them out of your nested stylesheet.
+In this example the hacky selector, `*+html`, isn't too bad.  However some hacks are pretty long-winded, and soon you'll thank yourself for moving them out of your nested stylesheet.
 
 You don't have to limit yourself to browser hacks.  Consider self-clearing: to make an element clear itself requires 13 lines of CSS, in 3 selector blocks, by my count.  To make a second element clear itself, you need to add the element's selector to each of those three blocks.  It's fiddly.  And your stylesheet gets harder and harder to understand.
 
 We can do better:
 
-app/views/stylesheets/site.ncss:
+`app/views/stylesheets/site.ncss`:
 
-  <%= self_clear 'div.foo', 'div.bar', 'baz' %>
+    <%= self_clear 'div.foo', 'div.bar', 'baz' %>
 
 Self-clear as many elements as you like in one easy line.
 
@@ -158,41 +155,41 @@ Pre-requisite: Rails 2.1 (use v0.2.6 for Rails 2.0).
 
 First, install in the usual Rails way.  From your application's directory:
 
-  $ script/plugin install http://opensource.airbladesoftware.com/trunk/plugins/css_dryer
+    $ script/plugin install http://opensource.airbladesoftware.com/trunk/plugins/css_dryer
 
 Second, generate the stylesheets controller and helper, and a test nested stylesheet:
 
-  $ script/generate css_dryer
+    $ script/generate css_dryer
 
-Third, add a named route to your config/routes.rb:
+Third, add a named route to your `config/routes.rb`:
 
-  map.stylesheets 'stylesheets/:action.:format', :controller => 'stylesheets'
+    map.stylesheets 'stylesheets/:action.:format', :controller => 'stylesheets'
 
 Verify that everything is working by visiting this URL:
 
-  http://0.0.0.0:3000/stylesheets/test.css
+    http://0.0.0.0:3000/stylesheets/test.css
 
 You should see this output:
 
-  body {
-    color: blue;
-  }
-  body p {
-    color: red;
-  }
+    body {
+      color: blue;
+    }
+    body p {
+      color: red;
+    }
     
 
 ## Usage
 
-You put your stylesheets, DRY or otherwise, in <code>app/views/stylesheets/</code>.  Once rendered they will be cached in <code>public/stylesheets/</code>.
+You put your stylesheets, DRY or otherwise, in `app/views/stylesheets/`.  Once rendered they will be cached in `public/stylesheets/`.
 
-DRY stylesheet files should have a <code>ncss</code> extension -- think 'n' for nested.  For example, <code>site.ncss</code>.
+DRY stylesheet files should have a `ncss` extension -- think 'n' for nested.  For example, `site.ncss`.
 
-Get them in your views with a <code>css</code> extension like this:
+Get them in your views with a `css` extension like this:
 
     <link href='/stylesheets/site.css' rel='Stylesheet' type='text/css'>
 
-or with Rails' <code>stylesheet_link_tag</code> helper:
+or with Rails' `stylesheet_link_tag` helper:
 
     <%= stylesheet_link_tag 'site' %>
 
@@ -232,7 +229,7 @@ The idea came from John Nunemaker on [Rails Tips][6].  John beta-tested the code
 
 The caching code is based on [Topfunky's][7].
 
-Changing the controller's name to <code>stylesheets</code>, thus allowing one to use Rails' <code>stylesheet_link_tag</code> helper, occurred to me while reading Josh Susser's [Dirt Simple .rcss Templates][5].  Once I noticed it, I realised everybody was using a <code>StylesheetsController</code>.  Doh!
+Changing the controller's name to `stylesheets`, thus allowing one to use Rails' `stylesheet_link_tag` helper, occurred to me while reading Josh Susser's [Dirt Simple .rcss Templates][5].  Once I noticed it, I realised everybody was using a `StylesheetsController`.  Doh!
 
 [6]: http://railstips.org/2006/12/7/styleaby-css-plugin/
 [7]: http://topfunky.net/svn/plugins/styleaby/lib/stylesheets_controller.rb
