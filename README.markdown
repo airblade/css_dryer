@@ -3,7 +3,7 @@
 
 ## Introduction
 
-Cascading style sheets (CSS) are wonderful but repetitive.  Rails strongly discourages repetition, the don't repeat yourself (DRY) principle, so writing CSS feels ungainly in Rails.
+Cascading style sheets (CSS) are wonderful but repetitive.  [Repetition is bad](http://en.wikipedia.org/wiki/Don't_repeat_yourself), so CssDryer lets you write CSS without repeating yourself.  And you don't need to learn any new syntax.
 
 There are two sources of repetition in CSS:
 
@@ -25,7 +25,7 @@ The lack of variables leads to CSS like this:
 
 Note the repeated colour `#fefefe`.
 
-CssDryer eliminates both of these sources allowing you to write DRY, pleasing stylesheets.  The examples above become:
+CssDryer eliminates both of these.  The examples above become:
 
     <% dark_grey = '#fefefe' %>
 
@@ -53,7 +53,7 @@ The original whitespace is preserved as much as possible.
 
 ## Which Selectors Are Supported?
 
-CssDryer handles nested descendant, child, adjacent, class, pseudo-class, attribute and id selectors.
+CssDryer handles all [CSS 2.1 selectors]9http://www.w3.org/TR/CSS21/selector.html): nested descendant, child, adjacent, class, pseudo-class, attribute and id selectors.
 
 Multiple comma separated selectors are also supported.
 
@@ -91,14 +91,14 @@ Please also note that commas in comments will sometimes be replaced with a space
 
 You may use partial nested stylesheets as you would with normal templates.  For example, assuming your controller(s) set the @user variable and a User has a background colour (red):
 
-`app/views/stylesheets/site.ncss`:
+app/views/stylesheets/site.ncss:
 
     body {
       color: blue;
       <%= render :partial => 'content', :locals => {:background => @user.background} %>
     }
 
-`app/views/stylesheets/_content.ncss`:
+app/views/stylesheets/_content.ncss:
 
     div#content {
       background: <%= background %>;
@@ -122,7 +122,7 @@ Browser hacks are an ugly necessity in any non-trivial stylesheet.  They clutter
 
 So encapsulate them in the StylesheetsHelper instead.  Separate your lovely CSS from the decidely unlovely hacks.  For example:
 
-`app/views/stylesheets/site.ncss`:
+app/views/stylesheets/site.ncss:
 
     <% ie7 do %>
       #sidebar {
@@ -142,7 +142,7 @@ You don't have to limit yourself to browser hacks.  Consider self-clearing: to m
 
 We can do better:
 
-`app/views/stylesheets/site.ncss`:
+app/views/stylesheets/site.ncss:
 
     <%= self_clear 'div.foo', 'div.bar', 'baz' %>
 
@@ -151,11 +151,11 @@ Self-clear as many elements as you like in one easy line.
 
 ## Installation
 
-Pre-requisite: Rails 2.1 (use v0.2.6 for Rails 2.0).
+Pre-requisite: Rails 2.1.
 
 First, install in the usual Rails way.  From your application's directory:
 
-    $ script/plugin install http://opensource.airbladesoftware.com/trunk/plugins/css_dryer
+    $ script/plugin install git://github.com/airblade/css_dryer.git
 
 Second, generate the stylesheets controller and helper, and a test nested stylesheet:
 
@@ -197,13 +197,13 @@ or with Rails' `stylesheet_link_tag` helper:
 ## To Do
 
 * Make CssDryer work with Rails' asset packaging: incorporate Dan Walters' code on GitHub.
-* Rake task to generate and write .css files from .ncss ones.
+* Replace regexp-based nested-stylesheet parser with a Treetop parser.
 * Use .css.ncss naming convention.
 * Package as a gem as well as a plugin.
-* Configuration, e.g. #implicit_nested_divs = true
-* Replace regexp-based nested-stylesheet parser with a Treetop parser.
+* Configuration, e.g. `#implicit_nested_divs = true`
 * Merb compatibility.
 * Split out a separate EXAMPLES document.
+* Rake task to generate and write .css files from .ncss ones.
 
 
 ## Alternatives
