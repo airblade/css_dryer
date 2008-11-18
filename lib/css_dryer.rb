@@ -334,7 +334,7 @@ module CssDryer
   class NcssHandler
     include CssDryer
     include ERB::Util
-    include StylesheetsHelper if defined? StylesheetsHelper
+    include StylesheetsHelper
 
     cattr_accessor :erb_trim_mode
     self.erb_trim_mode = '-'
