@@ -151,7 +151,7 @@ Self-clear as many elements as you like in one easy line.
 
 ## Installation
 
-Pre-requisite: Rails 2.1.
+Pre-requisite: Rails 2.2.
 
 First, install in the usual Rails way.  From your application's directory:
 
