@@ -2,8 +2,9 @@
 
 Below is a complete list of changes for each revision of CssDryer.
 
-== HEAD
+== 0.3.0
 
+* Rails 2.2 compatibility (thanks to Josh Peek for help).
 * The self_clear helper accepts a :clear option.
 
 == 0.2.8

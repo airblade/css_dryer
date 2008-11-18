@@ -91,14 +91,14 @@ Please also note that commas in comments will sometimes be replaced with a space
 
 You may use partial nested stylesheets as you would with normal templates.  For example, assuming your controller(s) set the @user variable and a User has a background colour (red):
 
-app/views/stylesheets/site.ncss:
+app/views/stylesheets/site.css.ncss:
 
     body {
       color: blue;
       <%= render :partial => 'content', :locals => {:background => @user.background} %>
     }
 
-app/views/stylesheets/_content.ncss:
+app/views/stylesheets/_content.css.ncss:
 
     div#content {
       background: <%= background %>;
@@ -122,7 +122,7 @@ Browser hacks are an ugly necessity in any non-trivial stylesheet.  They clutter
 
 So encapsulate them in the StylesheetsHelper instead.  Separate your lovely CSS from the decidely unlovely hacks.  For example:
 
-app/views/stylesheets/site.ncss:
+app/views/stylesheets/site.css.ncss:
 
     <% ie7 do %>
       #sidebar {
@@ -142,7 +142,7 @@ You don't have to limit yourself to browser hacks.  Consider self-clearing: to m
 
 We can do better:
 
-app/views/stylesheets/site.ncss:
+app/views/stylesheets/site.css.ncss:
 
     <%= self_clear 'div.foo', 'div.bar', 'baz' %>
 
@@ -183,7 +183,7 @@ You should see this output:
 
 You put your stylesheets, DRY or otherwise, in `app/views/stylesheets/`.  Once rendered they will be cached in `public/stylesheets/`.
 
-DRY stylesheet files should have a `ncss` extension -- think 'n' for nested.  For example, `site.ncss`.
+DRY stylesheet files should have a `ncss` extension -- think 'n' for nested.  For example, `site.css.ncss`.
 
 Get them in your views with a `css` extension like this:
 
@@ -198,13 +198,12 @@ or with Rails' `stylesheet_link_tag` helper:
 
 * Make CssDryer work with Rails' asset packaging: incorporate Dan Walters' code on GitHub.
 * Replace regexp-based nested-stylesheet parser with a Treetop parser.
-* Use .css.ncss naming convention.
 * Package as a gem as well as a plugin.
 * Configuration, e.g. `#implicit_nested_divs = true`
 * Merb compatibility.
 * Split out a separate EXAMPLES document.
 * Rake task to generate and write .css files from .ncss ones.
-* Port to Java/JSP/Servlet to bring a little ray of sunshine to J2EE webapp programming..
+* Port to Java/JSP/Servlet to bring a little ray of sunshine to J2EE webapp programming.
 
 
 ## Alternatives

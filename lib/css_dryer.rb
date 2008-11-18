@@ -17,7 +17,7 @@ end
 # Converts DRY stylesheets into normal CSS ones.
 module CssDryer
 
-  VERSION = '0.2.8'
+  VERSION = '0.3.0'
 
   class StyleHash < Hash  #:nodoc:
     attr_accessor :multiline
@@ -334,34 +334,17 @@ module CssDryer
   class NcssHandler
     include CssDryer
     include ERB::Util
+    include StylesheetsHelper
 
-    def initialize(view)
-      @view = view
+    cattr_accessor :erb_trim_mode
+    self.erb_trim_mode = '-'
+
+    def compile(template)
+      @dry_css = ''
+      ::ERB.new(template.source, nil, erb_trim_mode, '@dry_css').result(binding)
+      css = process @dry_css
+      src = ::ERB.new("<% __in_erb_template=true %>#{css}", nil, erb_trim_mode, '@output_buffer').src
+      RUBY_VERSION >= '1.9' ? src.sub(/\A#coding:.*\n/, '') : src
     end
-
-    def compilable?
-      false
-    end
-
-    def render(template)
-      # Make local variables available to partials.
-      template.locals.each do |k,v|
-        code = "def #{k}\n"
-        code << case v
-                when String then %Q{'#{v}'}
-                when nil    then  "''"
-                else "#{v}"
-                end
-        code << "\nend\n"
-        @view.instance_eval code
-      end
-
-      dry_css = ::ERB.new(template.source, nil, @view.erb_trim_mode).result(@view.send(:binding))
-      # This processing step, where we un-nest the stylesheet, is the reason we
-      # render the template rather than compile it.  Compilation would not allow
-      # us to get at the evaluated ERB and then un-nest it.
-      process(dry_css)
-    end
-
   end
 end
