@@ -339,12 +339,14 @@ module CssDryer
     cattr_accessor :erb_trim_mode
     self.erb_trim_mode = '-'
 
+    def self.call(template)
+      new.compile(template)
+    end
+
     def compile(template)
       @dry_css = ''
       ::ERB.new(template.source, nil, erb_trim_mode, '@dry_css').result(binding)
-      css = process @dry_css
-      src = ::ERB.new("<% __in_erb_template=true %>#{css}", nil, erb_trim_mode, '@output_buffer').src
-      RUBY_VERSION >= '1.9' ? src.sub(/\A#coding:.*\n/, '') : src
+      process(@dry_css).inspect
     end
   end
 end
