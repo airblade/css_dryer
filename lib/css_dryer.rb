@@ -335,11 +335,10 @@ module CssDryer
     include CssDryer
     include StylesheetsHelper
 
-    def compile_with_css_dryer(template)
-      temp = compile_without_css_dryer(template)
+    def compile(template)
+      temp = super
       temp + "; @output_buffer = CssDryer::NcssHandler.new.process(@output_buffer)"
     end
-    alias_method_chain :compile, :css_dryer
 
   end
 end
