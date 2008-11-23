@@ -331,22 +331,15 @@ module CssDryer
   # as a new templating system.
   #
   # DRY stylesheets are piped through ERB and then CssDryer#process.
-  class NcssHandler
+  class NcssHandler < ActionView::TemplateHandlers::ERB
     include CssDryer
-    include ERB::Util
     include StylesheetsHelper
 
-    cattr_accessor :erb_trim_mode
-    self.erb_trim_mode = '-'
-
-    def self.call(template)
-      new.compile(template)
+    def compile_with_css_dryer(template)
+      temp = compile_without_css_dryer(template)
+      temp + "; @output_buffer = CssDryer::NcssHandler.new.process(@output_buffer)"
     end
+    alias_method_chain :compile, :css_dryer
 
-    def compile(template)
-      @dry_css = ''
-      ::ERB.new(template.source, nil, erb_trim_mode, '@dry_css').result(binding)
-      process(@dry_css).inspect
-    end
   end
 end
