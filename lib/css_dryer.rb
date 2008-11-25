@@ -333,7 +333,7 @@ module CssDryer
   # DRY stylesheets are piped through ERB and then CssDryer#process.
   class NcssHandler < ActionView::TemplateHandlers::ERB
     include CssDryer
-    include StylesheetsHelper
+    include StylesheetsHelper rescue nil # In case user doesn't have helper/has not ran generator yet
 
     def compile(template)
       temp = super
