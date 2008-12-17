@@ -13,7 +13,6 @@ module CssDryer
       temp = super
       temp + "; @output_buffer = CssDryer::NcssHandler.new.process(@output_buffer)"
     end
-
   end
 
 end
