@@ -17,7 +17,7 @@ end
 # Converts DRY stylesheets into normal CSS ones.
 module CssDryer
 
-  VERSION = '0.3.0'
+  VERSION = '0.3.1'
 
   class StyleHash < Hash  #:nodoc:
     attr_accessor :multiline
@@ -333,7 +333,8 @@ module CssDryer
   # DRY stylesheets are piped through ERB and then CssDryer#process.
   class NcssHandler < ActionView::TemplateHandlers::ERB
     include CssDryer
-    include StylesheetsHelper rescue nil # In case user doesn't have helper/has not ran generator yet
+    # In case user doesn't have helper or hasn't run generator yet.
+    include StylesheetsHelper rescue nil
 
     def compile(template)
       temp = super

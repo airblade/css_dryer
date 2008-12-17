@@ -2,6 +2,10 @@
 
 Below is a complete list of changes for each revision of CssDryer.
 
+== 0.3.1
+
+* Merged Mina Guib's refactoring of the template handling code.  Partials now work again.  Thanks Mina!
+
 == 0.3.0
 
 * Rails 2.2 compatibility (thanks to Josh Peek for help).
