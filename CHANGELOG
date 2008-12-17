@@ -2,6 +2,10 @@
 
 Below is a complete list of changes for each revision of CssDryer.
 
+== HEAD
+
+* Updated test nested stylesheet to render a partial and call a helper.
+
 == 0.4.0
 
 * Refactored file layout so tests run again.

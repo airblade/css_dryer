@@ -14,6 +14,10 @@ class CssDryerGenerator < Rails::Generator::Base
              'app/views/stylesheets/test.css.ncss',
              :chmod => 0644,
              :collision => :skip
+      m.file '_foo.css.ncss',
+             'app/views/stylesheets/_foo.css.ncss',
+             :chmod => 0644,
+             :collision => :skip
     end
   end
 end

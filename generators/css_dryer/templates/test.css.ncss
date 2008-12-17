@@ -4,3 +4,9 @@ body {
     color: red;
   }
 }
+<%= render :partial => 'foo', :locals => {:bar => 'red'} %>
+<% ie7 do %>
+h2 {
+  margin-top: 1em;
+}
+<% end %>

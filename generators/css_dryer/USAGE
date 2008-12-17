@@ -7,4 +7,5 @@ Example:
     This will create:
         app/controllers/stylesheets_controller.rb
         app/helpers/stylesheets_helper.rb
-        app/views/test.ncss
+        app/views/test.css.ncss
+        app/views/_foo.css.ncss

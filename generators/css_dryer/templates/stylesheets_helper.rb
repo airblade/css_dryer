@@ -16,13 +16,6 @@ module StylesheetsHelper
     wrap '* + html', &block
   end
 
-  # <% ie do %>
-  #   css for ie here
-  # <% end %>
-  def ie(&block)
-    ie6(&block) + ie7(&block)
-  end
-
   # Self-clearing.  For example:
   #
   # <%= self_clear 'div#foo', 'img.bar', 'p ul' %>

@@ -177,6 +177,16 @@ You should see this output:
     body p {
       color: red;
     }
+    h4 {
+      color: red;
+    }
+    h4 em { font-weight: bold; }
+    * + html h2 {
+      margin-top: 1em;
+    }
+
+If the output looks good, delete `app/views/stylesheets/{test,_foo}.css.ncss`.
+
     
 
 ## Usage
