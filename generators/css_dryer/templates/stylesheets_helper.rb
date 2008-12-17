@@ -63,8 +63,8 @@ module StylesheetsHelper
   # css_dryer will then de-nest the result when it
   # post-processes the result of the ERB evaluation.
   def wrap(with, &block)
-    @dry_css << "#{with} {"
+    @output_buffer << "#{with} {"
     yield
-    @dry_css << '}'
+    @output_buffer << '}'
   end
 end
