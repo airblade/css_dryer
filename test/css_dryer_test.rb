@@ -1,8 +1,8 @@
 require 'test/unit'
-require File.dirname(__FILE__) + '/../lib/css_dryer'
+require File.dirname(__FILE__) + '/../lib/css_dryer/processor'
 
 class TestCssDryer < Test::Unit::TestCase
-  include CssDryer
+  include CssDryer::Processor
 
   def test_should_build_structure_without_nesting
     css = <<END

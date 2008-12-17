@@ -2,6 +2,10 @@
 
 Below is a complete list of changes for each revision of CssDryer.
 
+== 0.4.0
+
+* Refactored file layout so tests run again.
+
 == 0.3.1
 
 * Merged Mina Guib's refactoring of the template handling code.  Partials now work again.  Thanks Mina!
