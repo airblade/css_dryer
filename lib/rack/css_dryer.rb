@@ -1,4 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/../css_dryer/processor')
+require 'ERB'
 
 # Rack::CssDryer is a Rack middleware that serves de-nested nested
 # stylesheets (.ncss) if available.
