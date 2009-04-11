@@ -2,6 +2,9 @@ require File.expand_path(File.dirname(__FILE__) + '/../css_dryer/processor')
 
 # Rack::CssDryer is a Rack middleware that serves de-nested nested
 # stylesheets (.ncss) if available.
+#
+# Nested stylesheets are run through ERB and then denested to convert them
+# into valid CSS.
 module Rack
   class CssDryer
     include ::CssDryer::Processor
@@ -28,6 +31,7 @@ module Rack
 
         if File.exists?(ncss)
           nested_css = File.read(ncss)
+          nested_css = ::ERB.new(nested_css, nil, '-').result
           css = process(nested_css)
           length = ''.respond_to?(:bytesize) ? css.bytesize.to_s : css.size.to_s
           [200, {'Content-Type' => 'text/css', 'Content-Length' => length}, [css]]
