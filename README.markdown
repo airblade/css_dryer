@@ -151,6 +151,8 @@ Self-clear as many elements as you like in one easy line.
 
 ## Installation
 
+### Rails plugin
+
 Pre-requisite: Rails 2.2.
 
 First, install in the usual Rails way.  From your application's directory:
@@ -187,6 +189,9 @@ You should see this output:
 
 If the output looks good, delete `app/views/stylesheets/{test,_foo}.css.ncss`.
 
+### Rack
+
+See the example `config.ru` file.  I'm a beginner with Rack so feedback would be much appreciated.
     
 
 ## Usage
