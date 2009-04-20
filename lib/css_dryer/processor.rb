@@ -65,7 +65,7 @@ module CssDryer
       document = []
       selectors = []
       media_block = false
-      css.each do |line|
+      css.each_line do |line|
         depth = selectors.length
         case line.chomp!
         # Media block (multiline) opening - treat as plain text but start
@@ -198,7 +198,7 @@ module CssDryer
     def factor_out_comma_separated_selectors(css, indent = 2)  #:nodoc:
       # TODO: replace with a nice regex
       commas = false
-      css.each do |line|
+      css.each_line do |line|
         next if line =~ /@media/
         next if line =~ /,.*;\s*$/    # allow comma separated style values
         commas = true if line =~ /,/
@@ -206,7 +206,7 @@ module CssDryer
       return css unless commas
 
       state_machine = StateMachine.new indent
-      css.each { |line| state_machine.act_on line }
+      css.each_line { |line| state_machine.act_on line }
       factor_out_comma_separated_selectors state_machine.result
     end
 
