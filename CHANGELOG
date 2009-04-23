@@ -2,6 +2,10 @@
 
 Below is a complete list of changes for each revision of CssDryer.
 
+== 0.4.2
+
+* Rails 2.3.2 and Ruby 1.9 support (thanks David Balatero).
+
 == 0.4.1
 
 * Rack support.
