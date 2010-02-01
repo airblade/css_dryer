@@ -17,7 +17,7 @@ end
 module CssDryer
   module Processor
 
-    VERSION = '0.4.2'
+    VERSION = '0.4.3'
 
     # Converts a stylesheet with nested styles into a flattened,
     # normal CSS stylesheet.  The original whitespace is preserved

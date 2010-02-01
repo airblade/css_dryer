@@ -153,7 +153,7 @@ Self-clear as many elements as you like in one easy line.
 
 ### Rails plugin
 
-Pre-requisite: Rails 2.2.
+Pre-requisite: Rails 2.3.
 
 First, install in the usual Rails way.  From your application's directory:
 
@@ -209,15 +209,36 @@ or with Rails' `stylesheet_link_tag` helper:
     <%= stylesheet_link_tag 'site' %>
 
 
+## Caching, Rake and Capistrano
+
+By default the CSS rendered from your nested stylesheets is page-cached by Rails when caching is on (in production).  However there are two disadvantages:
+
+* You can't bundle these stylesheets into a single file (`stylesheet_link_tag :all, :cache => true`).
+* Rails' `stylesheet_link_tag` helper won't append a timestamp to the CSS path.  This means you cannot invalidate any browsers' caches of your stylesheet.  If you update your stylesheet, client web browsers will not see the update until they hard-reset their cache.
+
+We can solve both these problems by pre-generating our CSS files from our nested stylesheets every time we deploy.  Rails will then just see normal CSS files and the bundling and cache-busting behaviour will work again.
+
+The rake task `css_dryer:to_css` will convert your nested stylesheets into CSS files.  Use the following Capistrano code to get your servers to do this on each deploy:
+
+    namespace :deploy do
+      task :after_update do
+        generate_css
+      end
+
+      task :generate_css, :roles => [:web] do
+        run "cd #{current_path}; RAILS_ROOT=#{current_path} rake css_dryer:to_css"
+      end
+    end
+
+Note: this bypasses Rails so you can't do it if your nested stylesheets use instance variables from your controller.
+
+
 ## To Do
 
-* Make CssDryer work with Rails' asset packaging: incorporate Dan Walters' code on GitHub.
 * Replace regexp-based nested-stylesheet parser with a Treetop parser.
 * Package as a gem as well as a plugin.
 * Configuration, e.g. `#implicit_nested_divs = true`
-* Merb compatibility.
 * Split out a separate EXAMPLES document.
-* Rake task to generate and write .css files from .ncss ones.
 * Port to Java/JSP/Servlet to bring a little ray of sunshine to J2EE webapp programming.
 
 
