@@ -233,15 +233,6 @@ The rake task `css_dryer:to_css` will convert your nested stylesheets into CSS f
 Note: this bypasses Rails so you can't do it if your nested stylesheets use instance variables from your controller.
 
 
-## To Do
-
-* Replace regexp-based nested-stylesheet parser with a Treetop parser.
-* Package as a gem as well as a plugin.
-* Configuration, e.g. `#implicit_nested_divs = true`
-* Split out a separate EXAMPLES document.
-* Port to Java/JSP/Servlet to bring a little ray of sunshine to J2EE webapp programming.
-
-
 ## Alternatives
 
 * [Less CSS][less]: on top of the variables and nested rules that css_dryer offers, Less provides mixins and operations.  This is a popular project under active development.
@@ -252,6 +243,13 @@ Note: this bypasses Rails so you can't do it if your nested stylesheets use inst
 ## Credits
 
 The idea came from John Nunemaker on [Rails Tips][railstips].  John beta-tested the code, provided a test case for @media blocks and suggested the controller's body.  Thanks John!
+
+
+## To Do
+
+* Configuration, e.g. `#implicit_nested_divs = true`
+* Package as a gem as well as a plugin.
+* Replace regexp-based nested-stylesheet parser with a Treetop parser.
 
 
 ## Author
