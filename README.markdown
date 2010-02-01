@@ -261,7 +261,7 @@ The idea came from John Nunemaker on [Rails Tips][railstips].  John beta-tested 
 
 CssDryer is available under the MIT licence.  See MIT-LICENCE for the details.
 
-Copyright (c) 2006-2008 Andrew Stewart
+Copyright (c) 2006-2010 Andrew Stewart
 
 
   [less]: http://lesscss.org
