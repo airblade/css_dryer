@@ -244,39 +244,19 @@ Note: this bypasses Rails so you can't do it if your nested stylesheets use inst
 
 ## Alternatives
 
-* [RCSS][1]: ERB, server-side constants, server-side classes and command line execution.  No nesting as such, though server-side classes offer a form of inheritance.
+* [Less CSS][less]: on top of the variables and nested rules that css_dryer offers, Less provides mixins and operations.  This is a popular project under active development.
 
-* [DCSS][2] (written up [here][3]): server-side constants, different syntax.  Descendant selectors only.
-
-* [Styleaby][4] creates CSS with Ruby syntax.  "An experimental, unauthorized mashup of Scott Barron's stillborn Builder::CSS templates and Why The Lucky Stiff's Markaby templates."
-
-* [Dirt Simple .rcss Templates][5] by Josh Susser.  No nesting, just variables.
-
-[1]: http://rubyforge.org/projects/rcss
-[2]: http://rubyforge.org/projects/dcss
-[3]: http://myles.id.au/2006/11/20/introducing-dcss/
-[4]: http://topfunky.net/svn/plugins/styleaby/README
-[5]: http://blog.hasmanythrough.com/2006/3/23/dirt-simple-rcss-templates
+* [Sass][sass]: variables, nested rules, mixins and more, all using a pared-down syntax.  From the creators of HAML.
 
 
 ## Credits
 
-The idea came from John Nunemaker on [Rails Tips][6].  John beta-tested the code, provided a test case for @media blocks and suggested the controller's body.  Thanks John!
-
-The caching code is based on [Topfunky's][7].
-
-Changing the controller's name to `stylesheets`, thus allowing one to use Rails' `stylesheet_link_tag` helper, occurred to me while reading Josh Susser's [Dirt Simple .rcss Templates][5].  Once I noticed it, I realised everybody was using a `StylesheetsController`.  Doh!
-
-[6]: http://railstips.org/2006/12/7/styleaby-css-plugin/
-[7]: http://topfunky.net/svn/plugins/styleaby/lib/stylesheets_controller.rb
+The idea came from John Nunemaker on [Rails Tips][railstips].  John beta-tested the code, provided a test case for @media blocks and suggested the controller's body.  Thanks John!
 
 
 ## Author
 
-[Andrew Stewart][8], [AirBlade Software Ltd][9].
-
-[8]: mailto:boss@airbladesoftware.com
-[9]: http://airbladesoftware.com
+[Andrew Stewart][aws], [AirBlade Software Ltd][airblade].
 
 
 ## Licence
@@ -284,3 +264,10 @@ Changing the controller's name to `stylesheets`, thus allowing one to use Rails'
 CssDryer is available under the MIT licence.  See MIT-LICENCE for the details.
 
 Copyright (c) 2006-2008 Andrew Stewart
+
+
+  [less]: http://lesscss.org
+  [sass]: http://sass-lang.com
+  [railstips]: http://railstips.org/2006/12/7/styleaby-css-plugin/
+  [aws]: mailto:boss@airbladesoftware.com
+  [airblade]: http://airbladesoftware.com
