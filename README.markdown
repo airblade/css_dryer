@@ -221,7 +221,7 @@ We can solve both these problems by pre-generating our CSS files from our nested
 The rake task `css_dryer:to_css` will convert your nested stylesheets into CSS files.  Use the following Capistrano code to get your servers to do this on each deploy:
 
     namespace :deploy do
-      task :after_update do
+      task :after_update_code do
         generate_css
       end
 
