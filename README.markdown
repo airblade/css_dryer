@@ -226,7 +226,7 @@ The rake task `css_dryer:to_css` will convert your nested stylesheets into CSS f
       end
 
       task :generate_css, :roles => [:web] do
-        run "cd #{current_path}; RAILS_ROOT=#{current_path} rake css_dryer:to_css"
+        run "cd #{release_path}; RAILS_ROOT=#{release_path} rake css_dryer:to_css"
       end
     end
 
