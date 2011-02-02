@@ -1,5 +1,7 @@
 # CssDryer -- Eliminate Repetition In Your Stylesheets
 
+*Please note I am no longer working on this.  I'm pleased to say it was the first and, for a long time, the only Rails plugin to support nested selectors.  It did the job admirably but now I use [SASS](http://sass-lang.com/) instead.*
+
 
 ## Introduction
 
